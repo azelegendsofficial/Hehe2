@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Space Store ID | Apex Digital Solutions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --space-bg: #050505;
+            --primary-neon: #7c3aed;
+            --secondary-neon: #06b6d4;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+        }
+
+        /* --- RESET & BASE --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--space-bg); color: var(--text-main); overflow-x: hidden; line-height: 1.6; width: 100%; }
+
+        /* --- BACKGROUND ANIMATION --- */
+        .stars-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background: radial-gradient(circle at 50% 50%, #1e1b4b 0%, #050505 100%);
+        }
+        .glow {
+            position: absolute; width: 60vw; height: 60vw; background: var(--primary-neon);
+            filter: blur(150px); border-radius: 50%; opacity: 0.1; animation: drift 25s infinite alternate;
+        }
+        @keyframes drift { from { transform: translate(-20%, -20%); } to { transform: translate(30%, 30%); } }
+
+        /* --- NAVIGATION FIX --- */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 6%; height: 75px; position: sticky; top: 0; z-index: 2000;
+            background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(25px); border-bottom: 1px solid var(--glass-border);
+        }
+        .logo { font-size: 1.4rem; font-weight: 800; letter-spacing: -1px; z-index: 2001; white-space: nowrap; }
+        .logo span { color: var(--secondary-neon); }
+
+        .menu-trigger {
+            display: flex; flex-direction: column; gap: 6px; cursor: pointer; z-index: 2001; padding: 5px;
+        }
+        .menu-trigger span { width: 26px; height: 2.5px; background: #fff; border-radius: 10px; transition: 0.3s; }
+        .menu-trigger.active span:nth-child(1) { transform: translateY(8.5px) rotate(45deg); }
+        .menu-trigger.active span:nth-child(2) { opacity: 0; }
+        .menu-trigger.active span:nth-child(3) { transform: translateY(-8.5px) rotate(-45deg); }
+
+        .nav-overlay {
+            position: fixed; top: 0; right: -100%; width: 100%; max-width: 320px; height: 100vh;
+            background: rgba(8, 8, 8, 0.98); backdrop-filter: blur(40px);
+            display: flex; flex-direction: column; padding: 100px 40px; gap: 25px;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); border-left: 1px solid var(--glass-border); z-index: 1999;
+        }
+        .nav-overlay.open { right: 0; box-shadow: -20px 0 50px rgba(0,0,0,0.5); }
+        .nav-overlay a { color: #fff; text-decoration: none; font-size: 1.1rem; font-weight: 700; transition: 0.3s; }
+
+        /* --- HERO --- */
+        .hero { padding: 60px 6% 30px; text-align: center; }
+        .hero h1 { font-size: clamp(2rem, 7vw, 4rem); font-weight: 800; line-height: 1.1; margin-bottom: 15px; background: linear-gradient(to bottom, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { color: var(--text-dim); max-width: 600px; margin: 0 auto 30px; font-size: 0.95rem; }
+
+        /* --- TABS SYSTEM (BUG FIX: HORIZONTAL SCROLL) --- */
+        .tabs-wrapper {
+            width: 100%; overflow-x: auto; display: flex; justify-content: flex-start;
+            padding: 10px 6% 30px; margin-bottom: 20px; scrollbar-width: none; /* Firefox */
+        }
+        .tabs-wrapper::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+        
+        .tabs-header { display: flex; gap: 12px; margin: 0 auto; }
+        .tab-btn {
+            white-space: nowrap; padding: 12px 22px; background: var(--glass); border: 1px solid var(--glass-border);
+            color: var(--text-dim); border-radius: 50px; cursor: pointer; font-weight: 700; transition: 0.3s; font-size: 0.85rem;
+        }
+        .tab-btn.active { background: #fff; color: #000; border-color: #fff; box-shadow: 0 8px 20px rgba(255,255,255,0.15); }
+
+        /* --- PRODUCT GRID --- */
+        .container { max-width: 1300px; margin: 0 auto; padding: 0 6% 80px; }
+        .grid { display: none; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .grid.active { display: grid; animation: fadeInUp 0.6s ease-out forwards; }
+
+        .p-card {
+            background: var(--glass); border: 1px solid var(--glass-border); border-radius: 24px;
+            padding: 16px; transition: 0.3s; position: relative; display: flex; flex-direction: column;
+        }
+        .p-image { width: 100%; aspect-ratio: 16/10; border-radius: 18px; object-fit: cover; margin-bottom: 15px; }
+        .p-tag { font-size: 0.65rem; font-weight: 800; color: var(--secondary-neon); text-transform: uppercase; margin-bottom: 5px; }
+        .p-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 10px; color: #fff; }
+        .p-desc { font-size: 0.85rem; color: var(--text-dim); margin-bottom: 20px; flex-grow: 1; }
+        .p-price { font-size: 1.4rem; font-weight: 800; margin-bottom: 15px; padding-top: 15px; border-top: 1px solid var(--glass-border); }
+
+        .btn-buy {
+            display: block; width: 100%; padding: 14px; background: #fff; color: #000;
+            text-align: center; border-radius: 14px; text-decoration: none; font-weight: 800; transition: 0.2s;
+        }
+        .btn-buy:hover { background: var(--secondary-neon); transform: translateY(-2px); }
+
+        /* --- SPONSORS --- */
+        .sponsors { padding: 60px 6%; border-top: 1px solid var(--glass-border); text-align: center; }
+        .sponsor-grid { display: flex; justify-content: center; align-items: center; gap: 40px; flex-wrap: wrap; margin-top: 30px; }
+        .sp-item { display: flex; flex-direction: column; align-items: center; gap: 8px; opacity: 0.5; transition: 0.3s; }
+        .sp-item:hover { opacity: 1; }
+        .sp-logo { width: 50px; height: 50px; padding: 10px; border-radius: 50%; background: var(--glass); border: 1px solid var(--glass-border); }
+        .sp-item p { font-size: 0.8rem; font-weight: 800; }
+
+        /* --- FOOTER --- */
+        footer { padding: 40px 6%; text-align: center; border-top: 1px solid var(--glass-border); color: var(--text-dim); font-size: 0.8rem; }
+
+        /* --- ANIMATIONS --- */
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- DESKTOP ADJUSTMENTS --- */
+        @media (min-width: 1024px) {
+            nav { padding: 0 10%; }
+            .menu-trigger { display: none; }
+            .desktop-links { display: flex; gap: 30px; }
+            .desktop-links a { text-decoration: none; color: var(--text-dim); font-weight: 600; font-size: 0.9rem; transition: 0.3s; }
+            .desktop-links a:hover { color: #fff; }
+            .tabs-wrapper { justify-content: center; }
+            .container { padding: 0 10% 100px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="stars-container">
+    <div class="glow" style="top: -10%; left: -10%;"></div>
+    <div class="glow" style="bottom: -10%; right: -10%; background: var(--secondary-neon);"></div>
+</div>
+
+<nav>
+    <div class="logo">SPACE <span>STORE ID</span></div>
+    
+    <div class="desktop-links" style="display: none;">
+        <a href="#templates">Templates</a>
+        <a href="#modules">Modules</a>
+        <a href="#domains">Domains</a>
+        <a href="https://wa.me/628976497354" style="color: var(--secondary-neon);">Support</a>
+    </div>
+
+    <div class="menu-trigger" id="menuBtn">
+        <span></span><span></span><span></span>
+    </div>
+</nav>
+
+<div class="nav-overlay" id="navOverlay">
+    <a href="#templates" onclick="toggleMenu()">Web Templates</a>
+    <a href="#modules" onclick="toggleMenu()">Web Modules</a>
+    <a href="#domains" onclick="toggleMenu()">Domains Area</a>
+    <a href="https://wa.me/628976497354" onclick="toggleMenu()">Contact Admin</a>
+</div>
+
+<section class="hero">
+    <h1>Future <span>Evolution</span></h1>
+    <p>Premium Web Templates, Advanced Server Modules, and Managed Services designed for the next generation of business.</p>
+</section>
+
+<div class="tabs-wrapper">
+    <div class="tabs-header">
+        <button class="tab-btn active" onclick="openTab(event, 'templates')">Web Templates</button>
+        <button class="tab-btn" onclick="openTab(event, 'modules')">Module Web</button>
+        <button class="tab-btn" onclick="openTab(event, 'domains')">Domain Area</button>
+    </div>
+</div>
+
+<div class="container">
+    <div id="templates" class="grid active">
+        <div class="p-card">
+            <span class="p-tag">Personal / Blog</span>
+            <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=600" class="p-image">
+            <h3 class="p-title">Basic Space Template</h3>
+            <p class="p-desc">Landing page responsif dengan integrasi WhatsApp & SEO dasar. Sangat ringan.</p>
+            <div class="p-price">Rp200.000</div>
+            <a href="https://wa.me/628976497354" class="btn-buy">Beli Sekarang</a>
+        </div>
+        <div class="p-card">
+            <span class="p-tag">Enterprise</span>
+            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=600" class="p-image">
+            <h3 class="p-title">Professional Template</h3>
+            <p class="p-desc">Website korporasi premium dengan Dashboard Admin dan optimasi kecepatan tinggi.</p>
+            <div class="p-price">Rp6.700.000</div>
+            <a href="https://wa.me/628976497354" class="btn-buy">Mulai Proyek</a>
+        </div>
+    </div>
+
+    <div id="modules" class="grid">
+        <div class="p-card">
+            <span class="p-tag">Performance</span>
+            <h3 class="p-title">Web Server Module V1</h3>
+            <p class="p-desc">Optimasi caching dan firewall untuk kecepatan server maksimal.</p>
+            <div class="p-price">Rp120.000</div>
+            <a href="#" class="btn-buy">Ambil Modul</a>
+        </div>
+        <div class="p-card">
+            <span class="p-tag">Advanced</span>
+            <h3 class="p-title">Complete Web Setup</h3>
+            <p class="p-desc">Setup Domain, SSL, dan Server siap pakai dalam 24 jam.</p>
+            <div class="p-price">Rp1.200.000</div>
+            <a href="#" class="btn-buy">Pesan Paket</a>
+        </div>
+    </div>
+
+    <div id="domains" class="grid">
+        <div style="grid-column: 1/-1; text-align: center; padding: 40px 0;">
+            <p style="font-size: 2.5rem; font-weight: 800; opacity: 0.1;">COMING SOON</p>
+            <p style="color: var(--text-dim);">Layanan registrasi domain otomatis segera hadir.</p>
+        </div>
+    </div>
+</div>
+
+<section class="sponsors">
+    <p style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.7rem; color: var(--text-dim);">Our Partners</p>
+    <div class="sponsor-grid">
+        <div class="sp-item">
+            <img src="https://cdn-icons-png.flaticon.com/512/3064/3064155.png" class="sp-logo">
+            <p>RIDHUN HAPPY</p>
+        </div>
+        <div class="sp-item">
+            <img src="https://cdn-icons-png.flaticon.com/512/11529/11529457.png" class="sp-logo">
+            <p>EMPRESS STORE</p>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p>© 2026 Space Store ID • All Rights Reserved</p>
+</footer>
+
+<script>
+    // Menu Toggle Logic
+    const menuBtn = document.getElementById('menuBtn');
+    const navOverlay = document.getElementById('navOverlay');
+
+    function toggleMenu() {
+        menuBtn.classList.toggle('active');
+        navOverlay.classList.toggle('open');
+        document.body.style.overflow = navOverlay.classList.contains('open') ? 'hidden' : 'auto';
+    }
+
+    menuBtn.addEventListener('click', toggleMenu);
+
+    // Tab Logic
+    function openTab(evt, tabName) {
+        const grid = document.getElementsByClassName("grid");
+        for (let i = 0; i < grid.length; i++) grid[i].classList.remove("active");
+
+        const tabBtn = document.getElementsByClassName("tab-btn");
+        for (let i = 0; i < tabBtn.length; i++) tabBtn[i].classList.remove("active");
+
+        document.getElementById(tabName).classList.add("active");
+        evt.currentTarget.classList.add("active");
+        
+        // Auto scroll to content on mobile
+        if(window.innerWidth < 768) {
+            window.scrollTo({ top: document.querySelector('.tabs-wrapper').offsetTop - 80, behavior: 'smooth' });
+        }
+    }
+
+    // Battery Logic (Space AI)
+    if ('getBattery' in navigator) {
+        navigator.getBattery().then(function(battery) {
+            function check() {
+                if (battery.level <= 0.20 && !battery.charging) {
+                    alert("⚠️ Space AI: Baterai 20%! Hubungkan pengisi daya.");
+                }
+            }
+            battery.addEventListener('levelchange', check);
+            check();
+        });
+    }
+</script>
+
+</body>
+</html>
