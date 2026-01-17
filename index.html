@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Store ID – Solusi Website Masa Depan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* --- SPACE AI CORE STYLE --- */
+        :root {
+            --primary: #6366f1; /* Indigo Neon */
+            --secondary: #a855f7; /* Purple Neon */
+            --accent: #22d3ee; /* Cyan Space */
+            --bg-dark: #030712;
+            --card-bg: rgba(17, 24, 39, 0.7);
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        * { box-sizing: border-box; scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-dark);
+            color: #f3f4f6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(168, 85, 247, 0.1) 0%, transparent 40%);
+        }
+
+        /* --- NAVBAR GLASSMORPHISM --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 8%;
+            background: rgba(3, 7, 18, 0.8);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .logo { font-weight: 800; font-size: 1.5rem; background: linear-gradient(to right, var(--accent), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        .nav-links { display: flex; align-items: center; gap: 30px; }
+        .nav-links a { color: #94a3b8; text-decoration: none; font-weight: 600; transition: 0.3s; font-size: 0.95rem; }
+        .nav-links a:hover { color: var(--accent); }
+        .nav-links a.btn {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 10px 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        /* --- HERO SECTION --- */
+        .hero { padding: 100px 20px; text-align: center; }
+        .hero h1 { font-size: 3.5rem; font-weight: 800; line-height: 1.2; margin-bottom: 20px; }
+        .hero h1 span { color: var(--accent); text-shadow: 0 0 20px rgba(34, 211, 238, 0.3); }
+        .hero p { color: #94a3b8; font-size: 1.1rem; max-width: 600px; margin: 0 auto 40px; }
+
+        /* --- KEUNGGULAN --- */
+        .section-title { font-size: 2.2rem; font-weight: 800; margin-bottom: 50px; text-align: center; }
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1100px;
+            margin: 0 auto 80px;
+        }
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 35px;
+            border-radius: 24px;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .card:hover { 
+            border-color: var(--accent); 
+            transform: translateY(-10px); 
+            background: rgba(30, 41, 59, 0.8);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+        .card .icon { font-size: 40px; margin-bottom: 20px; display: block; }
+
+        /* --- TABS SYSTEM --- */
+        .tabs-container { padding: 80px 20px; background: rgba(15, 23, 42, 0.5); }
+        .tab-menu { display: flex; justify-content: center; gap: 15px; margin-bottom: 50px; flex-wrap: wrap; }
+        .tab-btn {
+            background: #1e293b;
+            border: 1px solid var(--border-color);
+            color: #94a3b8;
+            padding: 12px 28px;
+            border-radius: 14px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+        .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 0 20px rgba(99, 102, 241, 0.4); }
+
+        .tab-content { display: none; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
+        .tab-content.active { display: grid; animation: fadeInUp 0.6s ease; }
+
+        /* --- PRODUCT CARDS --- */
+        .prod-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+        }
+        .prod-img { width: 100%; height: 200px; background: #1e293b; object-fit: cover; }
+        .prod-info { padding: 25px; flex-grow: 1; display: flex; flex-direction: column; }
+        .prod-tag { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+        .prod-title { font-size: 1.3rem; margin-bottom: 10px; color: #fff; }
+        .prod-desc { font-size: 0.9rem; color: #94a3b8; line-height: 1.6; margin-bottom: 20px; flex-grow: 1; }
+        .prod-price { font-size: 1.5rem; font-weight: 800; color: #fff; margin-bottom: 20px; }
+        .buy-btn {
+            background: #fff;
+            color: #000;
+            text-align: center;
+            padding: 14px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 800;
+            transition: 0.3s;
+        }
+        .buy-btn:hover { background: var(--accent); color: #000; }
+
+        /* --- COMING SOON --- */
+        .cs-box { grid-column: 1/-1; padding: 100px; text-align: center; border: 2px dashed #334155; border-radius: 30px; }
+        .cs-box h2 { font-size: 3rem; margin-bottom: 10px; color: var(--secondary); }
+
+        /* --- ANIMATIONS --- */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- FOOTER --- */
+        footer { padding: 60px 20px; text-align: center; border-top: 1px solid var(--border-color); color: #64748b; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.2rem; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo">🚀 Space Store ID</div>
+    <div class="nav-links">
+        <a href="#">Produk</a>
+        <a href="#">Testimoni</a>
+        <a href="https://wa.me/628976497354" class="btn">Hubungi Kami</a>
+    </div>
+</nav>
+
+<section class="hero">
+    <h1>Bawa Bisnis Anda ke <span>Dimensi Digital</span></h1>
+    <p>Pusat template website profesional dan modul server terbaik untuk akselerasi bisnis online Anda di tahun 2026.</p>
+    
+    <div class="grid-3">
+        <div class="card">
+            <span class="icon">💎</span>
+            <h3>Clean Code</h3>
+            <p>Struktur kode rapi, ringan, dan sangat mudah untuk dimodifikasi.</p>
+        </div>
+        <div class="card">
+            <span class="icon">📱</span>
+            <h3>Responsive</h3>
+            <p>Tampilan sempurna di semua perangkat, mulai dari HP hingga monitor 4K.</p>
+        </div>
+        <div class="card">
+            <span class="icon">🚀</span>
+            <h3>SEO Ready</h3>
+            <p>Dioptimalkan untuk mesin pencari agar website Anda muncul di halaman utama.</p>
+        </div>
+    </div>
+</section>
+
+<section class="tabs-container" id="produk">
+    <h2 class="section-title">Katalog <span>Layanan Space</span></h2>
+    
+    <div class="tab-menu">
+        <button class="tab-btn active" onclick="showTab(event, 'templates')">Website Templates</button>
+        <button class="tab-btn" onclick="showTab(event, 'modules')">Module Web</button>
+        <button class="tab-btn" onclick="showTab(event, 'domain')">Domain</button>
+    </div>
+
+    <div id="templates" class="tab-content active">
+        <div class="prod-card">
+            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=500" class="prod-img" alt="Template Basic">
+            <div class="prod-info">
+                <span class="prod-tag">Entry Level</span>
+                <h3 class="prod-title">Template Basic Space</h3>
+                <p class="prod-desc">Cocok untuk landing page sederhana. Include: 3 Section, Mobile Responsive, & Fast Loading.</p>
+                <div class="prod-price">Rp200.000</div>
+                <a href="https://wa.me/628976497354?text=Halo%20SpaceStore,%20saya%20ingin%20beli%20Template%20Basic" class="buy-btn">Ambil Sekarang</a>
+            </div>
+        </div>
+        <div class="prod-card">
+            <img src="https://images.unsplash.com/photo-1551288049-bbbda5366392?q=80&w=500" class="prod-img" alt="Template Pro">
+            <div class="prod-info">
+                <span class="prod-tag">Best Seller</span>
+                <h3 class="prod-title">Template Professional</h3>
+                <p class="prod-desc">Desain eksklusif untuk korporasi. Include: CMS Dashboard, SEO Advance, & Premium Asset.</p>
+                <div class="prod-price">Rp6.700.000</div>
+                <a href="https://wa.me/628976497354?text=Halo%20SpaceStore,%20saya%20ingin%20beli%20Template%20Professional" class="buy-btn">Hubungi Sales</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="modules" class="tab-content">
+        <div class="prod-card">
+            <div class="prod-info">
+                <span class="prod-tag">Web Core</span>
+                <h3 class="prod-title">Module Web Server V1</h3>
+                <p class="prod-desc">Fitur: Optimasi Cache, Security Dasar, & Auto Restart.</p>
+                <div class="prod-price">Rp120.000</div>
+                <a href="#" class="buy-btn">Beli Modul</a>
+            </div>
+        </div>
+        <div class="prod-card">
+            <div class="prod-info">
+                <span class="prod-tag">Web Core</span>
+                <h3 class="prod-title">Module Web Server V2</h3>
+                <p class="prod-desc">Fitur: Load Balancing, Database Tuning, & High Speed Access.</p>
+                <div class="prod-price">Rp240.000</div>
+                <a href="#" class="buy-btn">Beli Modul</a>
+            </div>
+        </div>
+        <div class="prod-card">
+            <div class="prod-info">
+                <span class="prod-tag">Ultimate</span>
+                <h3 class="prod-title">Module Web Server Lengkap</h3>
+                <p class="prod-desc">Paket All-in-one termasuk setup domain, SSL, & monitoring server 24 jam.</p>
+                <div class="prod-price">Rp1.200.000</div>
+                <a href="#" class="buy-btn">Beli Paket</a>
+            </div>
+        </div>
+        <div class="prod-card">
+            <div class="prod-info">
+                <span class="prod-tag">Integration</span>
+                <h3 class="prod-title">Module Setup Domain V2</h3>
+                <p class="prod-desc">Konfigurasi DNS Cloudflare, Mail Server, & Subdomain management.</p>
+                <div class="prod-price">Rp340.000</div>
+                <a href="#" class="buy-btn">Beli Modul</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="domain" class="tab-content">
+        <div class="cs-box">
+            <h2>🛸 Coming Soon</h2>
+            <p>Pendaftaran Domain (.id, .com, .net) akan segera mendarat di Space Store!</p>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p>© 2026 Space Store ID. Powered by Space AI. 🌌</p>
+</footer>
+
+<script>
+    function showTab(evt, tabName) {
+        var i, tabContent, tabBtns;
+        tabContent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabContent.length; i++) {
+            tabContent[i].classList.remove("active");
+        }
+        tabBtns = document.getElementsByClassName("tab-btn");
+        for (i = 0; i < tabBtns.length; i++) {
+            tabBtns[i].classList.remove("active");
+        }
+        document.getElementById(tabName).classList.add("active");
+        evt.currentTarget.classList.add("active");
+    }
+</script>
+
+</body>
+</html>
