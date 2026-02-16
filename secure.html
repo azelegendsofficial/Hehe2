@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Check | Space Store ID</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #050505; --primary: #7c3aed; --glass: rgba(255,255,255,0.05); }
+        body { 
+            background: var(--bg); color: white; font-family: 'Plus Jakarta Sans', sans-serif;
+            display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden;
+        }
+        .card {
+            background: var(--glass); padding: 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);
+            width: 90%; max-width: 400px; text-align: center; backdrop-filter: blur(10px); z-index: 10;
+        }
+        .loader-bar { width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 10px; margin: 20px 0; overflow: hidden; }
+        .progress { width: 0%; height: 100%; background: var(--primary); transition: width 1.5s linear; }
+        
+        /* Box Verifikasi Asli */
+        .verify-box {
+            display: flex; align-items: center; justify-content: center; gap: 15px;
+            background: rgba(255,255,255,0.03); padding: 15px; border-radius: 10px; cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.1); transition: 0.3s;
+        }
+        .checkbox { width: 24px; height: 24px; border: 2px solid var(--primary); border-radius: 4px; position: relative; }
+        .checkbox.checked::after { content: '✔'; position: absolute; top: -2px; left: 3px; color: var(--primary); font-size: 18px; }
+
+        /* JEBAKAN BOT (Honeypot) - Tidak terlihat oleh manusia */
+        .hp-container { position: absolute; opacity: 0; z-index: -1; left: -9999px; }
+        
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="hp-container">
+    <input type="checkbox" id="bot-check" tabindex="-1" value="1">
+    <a href="/login" id="bot-link">Login Area</a>
+</div>
+
+<div class="card">
+    <div style="font-weight: 800; margin-bottom: 10px; font-size: 1.2rem;">SPACE <span style="color: #06b6d4;">STORE ID</span></div>
+    <p id="status-text" style="font-size: 0.9rem; color: #94a3b8;">Analyzing your request...</p>
+    
+    <div class="loader-bar">
+        <div class="progress" id="bar"></div>
+    </div>
+
+    <div id="challenge" class="hidden">
+        <div class="verify-box" id="real-box">
+            <div class="checkbox" id="cb"></div>
+            <span style="font-size: 0.9rem;">I am not a robot</span>
+        </div>
+    </div>
+</div>
+
+<script>
+    const bar = document.getElementById('bar');
+    const statusText = document.getElementById('status-text');
+    const challenge = document.getElementById('challenge');
+    const realBox = document.getElementById('real-box');
+    const hpCheck = document.getElementById('bot-check');
+    
+    let loadTime = Date.now();
+    let isBot = false;
+
+    // 1. Deteksi Honeypot: Jika checkbox tersembunyi tercentang, Fix BOT!
+    hpCheck.addEventListener('change', () => { isBot = true; });
+
+    // 2. Jalankan Loading Bar
+    setTimeout(() => {
+        bar.style.width = "100%";
+        setTimeout(() => {
+            statusText.innerText = "Verification required";
+            challenge.classList.remove('hidden');
+        }, 500);
+    }, 1000);
+
+    // 3. Fungsi Verifikasi Utama
+    realBox.onclick = function() {
+        let timeDifference = Date.now() - loadTime;
+
+        // Pertahanan: Jika diklik < 3 detik sejak page load, kemungkinan BOT
+        if (timeDifference < 3000 || isBot) {
+            statusText.innerText = "Security Alert: Bot Activity Detected.";
+            statusText.style.color = "#ff4444";
+            challenge.innerHTML = ""; // Hapus tombol biar dia nggak bisa klik lagi
+            return;
+        }
+
+        document.getElementById('cb').classList.add('checked');
+        statusText.innerText = "Verified! Redirecting...";
+        setTimeout(() => { window.location.href = "/id"; }, 800);
+    };
+
+    // 4. Jaring Pengaman Manusia (Auto-Redirect setelah 45 detik)
+    // Bot biasanya nggak nunggu selama ini, mereka akan timeout sendiri.
+    setTimeout(() => {
+        if (!document.getElementById('cb').classList.contains('checked') && !isBot) {
+            window.location.href = "/id";
+        }
+    }, 45000); 
+</script>
+
+</body>
+</html>
