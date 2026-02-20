@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pulsa Telkomsel | Space Store ID</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --space-bg: #050505;
+            --primary-neon: #7c3aed;
+            --secondary-neon: #06b6d4;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--space-bg); color: var(--text-main); overflow-x: hidden; }
+
+        /* Background Stars & Glow */
+        .stars-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background: radial-gradient(circle at 50% 50%, #1e1b4b 0%, #050505 100%);
+        }
+
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 6%; height: 75px; position: sticky; top: 0; z-index: 2000;
+            background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(25px); border-bottom: 1px solid var(--glass-border);
+        }
+        .logo { font-size: 1.4rem; font-weight: 800; text-decoration: none; color: #fff; }
+        .logo span { color: var(--secondary-neon); }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 6%; }
+        .header-box { text-align: center; margin-bottom: 40px; }
+        .p-tag { font-size: 0.7rem; font-weight: 800; color: var(--secondary-neon); text-transform: uppercase; letter-spacing: 2px; }
+        .p-title { 
+            font-size: 2.2rem; font-weight: 800; margin: 10px 0; 
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .pulsa-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 15px;
+        }
+
+        .pulsa-card {
+            background: var(--glass); border: 1px solid var(--glass-border);
+            border-radius: 20px; padding: 25px 20px; text-align: center;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(10px);
+            display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .pulsa-card:hover {
+            border-color: var(--primary-neon);
+            transform: translateY(-8px);
+            background: rgba(124, 58, 237, 0.05);
+            box-shadow: 0 15px 30px rgba(124, 58, 237, 0.1);
+        }
+
+        .nominal { font-size: 1.3rem; font-weight: 800; margin-bottom: 5px; color: #fff; }
+        .operator { font-size: 0.7rem; color: var(--secondary-neon); margin-bottom: 15px; font-weight: 700; text-transform: uppercase; }
+        .harga { font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 20px; }
+
+        .btn-buy {
+            display: block; width: 100%; padding: 12px; background: #fff; 
+            color: #000; text-align: center; border-radius: 12px; text-decoration: none;
+            font-weight: 800; font-size: 0.85rem; transition: 0.3s;
+        }
+        .btn-buy:hover { background: var(--primary-neon); color: #fff; transform: scale(1.05); }
+
+        @media (max-width: 480px) {
+            .pulsa-grid { grid-template-columns: repeat(2, 1fr); }
+            .p-title { font-size: 1.8rem; }
+        }
+
+        footer { text-align: center; padding: 40px 0; color: var(--text-dim); font-size: 0.8rem; border-top: 1px solid var(--glass-border); margin-top: 40px; }
+    </style>
+</head>
+<body>
+
+<div class="stars-container"></div>
+
+<nav>
+    <a href="/id" class="logo">SPACE <span>STORE ID</span></a>
+</nav>
+
+<div class="container">
+    <div class="header-box">
+        <span class="p-tag">Instant Delivery</span>
+        <h1 class="p-title">Pulsa Telkomsel</h1>
+        <p style="color: var(--text-dim); font-size: 0.9rem;">Pilih nominal pulsa. Harga terupdate secara otomatis.</p>
+    </div>
+
+    <div class="pulsa-grid" id="pulsaContainer">
+        </div>
+</div>
+
+<footer>
+    <p>© 2026 Space Store ID • Serui Cyber Power</p>
+</footer>
+
+<script>
+    const dataPulsa = [
+        { nom: "5.000", hrg: "10.560" },
+        { nom: "10.000", hrg: "15.500" },
+        { nom: "15.000", hrg: "20.225" },
+        { nom: "20.000", hrg: "25.200" },
+        { nom: "25.000", hrg: "30.140" },
+        { nom: "30.000", hrg: "35.050" },
+        { nom: "35.000", hrg: "40.070" },
+        { nom: "40.000", hrg: "44.899" },
+        { nom: "50.000", hrg: "54.920" },
+        { nom: "70.000", hrg: "74.750" },
+        { nom: "100.000", hrg: "103.722" },
+        { nom: "150.000", hrg: "155.490" },
+        { nom: "200.000", hrg: "203.350" }
+    ];
+
+    const container = document.getElementById('pulsaContainer');
+
+    dataPulsa.forEach(item => {
+        container.innerHTML += `
+            <div class="pulsa-card">
+                <div>
+                    <div class="nominal">${item.nom}</div>
+                    <div class="operator">Telkomsel</div>
+                    <div class="harga">Rp${item.hrg}</div>
+                </div>
+                <a href="https://wa.me/62xxxxxxxx?text=Halo%20Admin%20SpaceStore,%20saya%20mau%20beli%20pulsa%20Telkomsel%20${item.nom}" class="btn-buy">BELI</a>
+            </div>
+        `;
+    });
+</script>
+
+</body>
+</html>
