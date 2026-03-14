@@ -246,6 +246,22 @@
             <div class="p-price">Rp????</div>
             <a href="/Wilayah/lokasi.html" class="btn-buy">Datang Ke Lokasi</a>
         </div>
+        <div class="p-card">
+            <span class="p-tag">Rumah Sewa</span>
+            <img src="" class="p-image">
+            <h3 class="p-title">Rumah Sewa Standar</h3>
+            <p class="p-desc">Rumah sewa standar yang kecil, fleksibel, tapi tetap lengkap isinya, tekan lihat selengkap nya untuk melihat apa saja fitur yang disediakan oleh rumah standar ini.</p>
+            <div class="p-price">Rp????</div>
+            <a href="/rumahsewa/standar.html" class="btn-buy">Lihat Selengkapnya</a>
+        </div>
+        <div class="p-card">
+            <span class="p-tag">Rumah Sewa</span>
+            <img src="" class="p-image">
+            <h3 class="p-title">Rumah Sewa Premium</h3>
+            <p class="p-desc">Rumah sewa premium dengan design yang elegan, dan luas, tekan lihat selengkap nya untuk melihat apa saja fitur yang disediakan oleh rumah standar ini.</p>
+            <div class="p-price">Rp????</div>
+            <a href="/rumahsewa/standar.html" class="btn-buy">Lihat Selengkapnya</a>
+        </div>
     </div>
 
     <div id="domains" class="grid">
@@ -309,7 +325,7 @@
         navigator.getBattery().then(function(battery) {
             function check() {
                 if (battery.level <= 0.20 && !battery.charging) {
-                    alert("⚠️ Space AI: Baterai 20%! Hubungkan pengisi daya.");
+                    alert("⚠️ Space AI: Baterai Kamu Di Bawah 20%! Hubungkan pengisi daya sekarang!.");
                 }
             }
             battery.addEventListener('levelchange', check);
